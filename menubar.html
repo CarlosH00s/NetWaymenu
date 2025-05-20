@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu com Barra Superior</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a1a;
+            min-height: 100vh;
+            color: #e0e0e0;
+        }
+        
+        .navbar {
+            background-color: #121212;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            height: 60px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #333;
+        }
+        
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #e0e0e0;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin: 0 15px;
+        }
+        
+        .nav-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: #03A9F4;
+        }
+        
+        .mobile-menu-icon {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+        }
+        
+        .content {
+            margin-top: 80px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .card {
+            background-color: #212121;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid #333;
+        }
+        
+        .card h2 {
+            color: #e0e0e0;
+            margin-bottom: 15px;
+        }
+        
+        .card p {
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+        
+        .highlight-section {
+            background-color: #1565C0;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        .highlight-section h2 {
+            margin-bottom: 15px;
+        }
+
+        .footer {
+            background-color: #121212;
+            color: #b0b0b0;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            border-top: 1px solid #333;
+        }
+        
+        /* Responsividade para dispositivos móveis */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-icon {
+                display: block;
+            }
+            
+            .content {
+                margin-top: 70px;
+            }
+        }
+        
+        .link-container {
+    display: block;
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+}
+
+.link-container:hover {
+    background-color: #2a2a2a;
+}
+
+
+    </style>
+</head>
+<body>
+    <!-- Barra de navegação no topo -->
+    <nav class="navbar">
+        <div class="logo">Net Way</div>
+        <ul class="nav-links">
+            <li><a href="inicio.html">Início</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="contato.html">Contato</a></li>
+            <li><a href="sobre.html">Sobre</a></li>
+        </ul>
+        <div class="mobile-menu-icon" onclick="alert('Menu móvel')">☰</div>
+    </nav>
+    
+    <!-- Conteúdo principal -->
+    <div class="content">
+        <div class="highlight-section">
+            <h2>Bem-vindo ao Portal</h2>
+            <p>Acesse seus dados e informações em um só lugar</p>
+        </div>
+      
+        <a href="inicio.html" class="link-container">
+  <div>
+    <strong>Acesse NetWay</strong>
+    <p>Visualize suas estatísticas e dados em tempo real. Nosso painel intuitivo oferece informações detalhadas para ajudar na tomada de decisões.</p>
+  </div>
+</a>
+    
+        
+
+    
+    <!-- Rodapé -->
+    <footer class="footer">
+        © 2025 MeuApp - Todos os direitos reservados
+    </footer>
+</body>
+</html>

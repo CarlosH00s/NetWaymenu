@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contato - MeuApp</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .header {
+            background-color: #000000;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+        .nav {
+            display: flex;
+        }
+        .nav-item {
+            margin-left: 20px;
+            cursor: pointer;
+            color: #ffffff;
+            text-decoration: none;
+        }
+        .nav-item.active {
+            color: #3498db;
+        }
+        .content {
+            margin-left: 240px;
+            padding: 20px;
+        }
+        .page-title {
+            font-size: 28px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+        .date {
+            float: right;
+            font-size: 14px;
+            color: #aaa;
+            margin-top: 10px;
+        }
+        .contact-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .contact-card {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            width: calc(50% - 30px);
+            box-sizing: border-box;
+        }
+        .contact-form {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #333;
+            background-color: #2a2a2a;
+            color: #fff;
+            font-size: 14px;
+        }
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        .contact-icon {
+            font-size: 24px;
+            margin-right: 10px;
+            color: #3498db;
+        }
+        .contact-info {
+            margin-bottom: 15px;
+        }
+        .contact-social {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #fff;
+            text-decoration: none;
+        }
+        .social-icon:hover {
+            background-color: #3498db;
+        }
+
+         .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin: 0 15px;
+        }
+        
+        .nav-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: #03A9F4;
+        }
+        
+        .mobile-menu-icon {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+         .navbar {
+            background-color: #121212;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            height: 60px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #333;
+        }
+        
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #e0e0e0;
+        }
+        
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Net Way</div>
+        <ul class="nav-links">
+            <li><a href="inicio.html">Início</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="contato.html">Contato</a></li>
+            <li><a href="sobre.html">Sobre</a></li>
+        </ul>
+        <div class="mobile-menu-icon" onclick="alert('Menu móvel')">☰</div>
+    </nav>
+    
+    <div class="content" style="margin-left: 0;">
+        <div class="page-title">
+            Contato
+            <div class="date">Hoje, 14 de Maio, 2025</div>
+        </div>
+        
+        <div class="contact-container">
+            <div class="contact-card">
+                <h3>Fale Conosco</h3>
+                <div class="contact-info">
+                    <span class="contact-icon">✉️</span>netwayspam@gmail.com
+                </div>
+                <div class="contact-info">
+                    <span class="contact-icon">📞</span> (69) 99264-4735
+                </div>
+            
+                <div class="contact-social">
+                    <a href="https://github.com/CarlosH00s" class="social-icon" title="GitHub"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a>
+                    <a href="http://www.instagram.com/carlloshenrri__?igsh=bXZhb3UweWxvc2Nk&utm_source=qr" class="social-icon" title="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+                </div>
+            </div>
+            
+            <div class="contact-card">
+                <h3>Horário de Atendimento</h3>
+                <p>Segunda a Sexta: 8h às 18h</p>
+                <p>Sábado: 9h às 13h</p>
+                <p>Domingo e Feriados: Fechado</p>
+                <h4>Tempo médio de resposta</h4>
+                <p>E-mail: até 24 horas</p>
+                <p>Telefone: até 15 minutos</p>
+            </div>
+        </div>
+        
+        <div class="contact-form">
+            <h3>Envie sua mensagem</h3>
+            <form>
+                <div class="form-group">
+                    <label for="name">Nome completo</label>
+                    <input type="text" id="name" placeholder="Seu nome">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" placeholder="seu@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="subject">Assunto</label>
+                    <select id="subject">
+                        <option value="">Selecione um assunto</option>
+                        <option value="suporte">Suporte técnico</option>
+                        <option value="vendas">Vendas</option>
+                        <option value="faturamento">Faturamento</option>
+                        <option value="outro">Outro assunto</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Mensagem</label>
+                    <textarea id="message" placeholder="Digite sua mensagem aqui..."></textarea>
+                </div>
+                
+                <button type="submit" class="btn">Enviar mensagem</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

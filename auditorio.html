@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auditoria de Segurança</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+        }
+        .dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
+        }
+        .header h1 {
+            margin: 0;
+            color: #fff;
+            display: flex;
+            align-items: center;
+        }
+        .header h1 svg {
+            margin-right: 15px;
+        }
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        .filter-item {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 12px 18px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .filter-item.active {
+            background-color: #0366d6;
+        }
+        .filter-item:hover {
+            background-color: #333;
+        }
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        .stat-card {
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .stat-title {
+            font-size: 14px;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .stat-change {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+        .stat-positive {
+            color: #4caf50;
+        }
+        .stat-negative {
+            color: #f44336;
+        }
+        .activity-list {
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .activity-header h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+        .activity-item {
+            display: flex;
+            padding: 15px 0;
+            border-bottom: 1px solid #333;
+        }
+        .activity-icon {
+            margin-right: 15px;
+            width: 40px;
+            height: 40px;
+            background-color: #2a2a2a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .activity-content {
+            flex-grow: 1;
+        }
+        .activity-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .activity-details {
+            color: #aaa;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        .activity-time {
+            color: #777;
+            font-size: 12px;
+        }
+        .activity-status {
+            margin-left: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .status-success {
+            color: #4caf50;
+        }
+        .status-warning {
+            color: #ff9800;
+        }
+        .status-danger {
+            color: #f44336;
+        }
+        .chart-container {
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .chart-header h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+        .chart {
+            height: 300px;
+            width: 100%;
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            padding-top: 20px;
+        }
+        .chart-bar {
+            flex: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .chart-label {
+            font-size: 12px;
+            margin-top: 8px;
+            color: #aaa;
+        }
+        .bar {
+            width: 80%;
+            background-color: #0366d6;
+            border-radius: 4px 4px 0 0;
+            transition: height 0.5s;
+        }
+        .export-btn {
+            background-color: #2a2a2a;
+            border: none;
+            color: #e0e0e0;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+        .export-btn svg {
+            margin-right: 8px;
+        }
+        .export-btn:hover {
+            background-color: #333;
+        }
+        @media (max-width: 768px) {
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .export-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 14px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.export-btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+}
+
+.export-btn svg {
+    stroke: white;
+}
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <h1>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 6H3M21 12H3M21 18H3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                Auditoria de Segurança
+            </h1>
+        <a href="segurança.html" download class="export-btn">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14 10V12.6667C14 13.0203 13.8595 13.3594 13.6095 13.6095C13.3594 13.8595 13.0203 14 12.6667 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M11.3334 5.33333L8.00002 2L4.66669 5.33333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M8 2V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Exportar Relatório
+</a>
+        </div>
+
+
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-title">Total de Eventos</div>
+                <div class="stat-value">247</div>
+                <div class="stat-change stat-positive">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 12V4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M4 8L8 4L12 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    12% desde o último período
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Alertas de Segurança</div>
+                <div class="stat-value">8</div>
+                <div class="stat-change stat-negative">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 4V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 8L8 12L4 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    3% desde o último período
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Tentativas de Login</div>
+                <div class="stat-value">156</div>
+                <div class="stat-change stat-positive">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 12V4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M4 8L8 4L12 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    5% desde o último período
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Pontuação de Segurança</div>
+                <div class="stat-value">87/100</div>
+                <div class="stat-change stat-positive">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 12V4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M4 8L8 4L12 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    2 pontos desde o último período
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-header">
+                <h2>Tendências de Atividade</h2>
+                <div class="chart-options">
+                    <div class="filter-item active">Atividades</div>
+                    <div class="filter-item">Alertas</div>
+                </div>
+            </div>
+            <div class="chart">
+                <div class="chart-bar">
+                    <div class="bar" style="height: 60%;"></div>
+                    <div class="chart-label">Seg</div>
+                </div>
+                <div class="chart-bar">
+                    <div class="bar" style="height: 75%;"></div>
+                    <div class="chart-label">Ter</div>
+                </div>
+                <div class="chart-bar">
+                    <div class="bar" style="height: 45%;"></div>
+                    <div class="chart-label">Qua</div>
+                </div>
+                <div class="chart-bar">
+                    <div class="bar" style="height: 85%;"></div>
+                    <div class="chart-label">Qui</div>
+                </div>
+                <div class="chart-bar">
+                    <div class="bar" style="height: 95%;"></div>
+                    <div class="chart-label">Sex</div>
+                </div>
+                <div class="chart-bar">
+                    <div class="bar" style="height: 40%;"></div>
+                    <div class="chart-label">Sáb</div>
+                </div>
+                <div class="chart-bar">
+                    <div class="bar" style="height: 30%;"></div>
+                    <div class="chart-label">Dom</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="activity-list">
+            <div class="activity-header">
+                <h2>Atividades Recentes</h2>
+                <div class="filter-item">Filtrar</div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-icon status-success">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16.6667 5L7.50004 14.1667L3.33337 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="activity-content">
+                    <div class="activity-title">Login bem-sucedido</div>
+                    <div class="activity-details">São Paulo, Brasil • IP: 189.54.220.XXX • Chrome em Windows</div>
+                    <div class="activity-time">Hoje às 14:32</div>
+                </div>
+                <div class="activity-status status-success">OK</div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-icon status-danger">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 6.66667V10M10 13.3333H10.0083M17.5 10C17.5 14.1421 14.1421 17.5 10 17.5C5.85786 17.5 2.5 14.1421 2.5 10C2.5 5.85786 5.85786 2.5 10 2.5C14.1421 2.5 17.5 5.85786 17.5 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="activity-content">
+                    <div class="activity-title">Tentativa de login falhou</div>
+                    <div class="activity-details">Kiev, Ucrânia • IP: 93.75.101.XXX • Firefox em Linux</div>
+                    <div class="activity-time">Hoje às 12:15</div>
+                </div>
+                <div class="activity-status status-danger">Bloqueado</div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-icon">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 14.1667V5.83333M5.83337 10H14.1667" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="activity-content">
+                    <div class="activity-title">2FA ativado</div>
+                    <div class="activity-details">São Paulo, Brasil • IP: 189.54.220.XXX • Chrome em Windows</div>
+                    <div class="activity-time">Ontem às 18:45</div>
+                </div>
+                <div class="activity-status status-success">OK</div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-icon status-warning">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 6.66667V10M10 13.3333H10.0083M17.5 10C17.5 14.1421 14.1421 17.5 10 17.5C5.85786 17.5 2.5 14.1421 2.5 10C2.5 5.85786 5.85786 2.5 10 2.5C14.1421 2.5 17.5 5.85786 17.5 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="activity-content">
+                    <div class="activity-title">Mudança de senha</div>
+                    <div class="activity-details">São Paulo, Brasil • IP: 189.54.220.XXX • Chrome em Windows</div>
+                    <div class="activity-time">18/05/2025 às 10:22</div>
+                </div>
+                <div class="activity-status status-success">OK</div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-icon status-danger">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 6.66667V10M10 13.3333H10.0083M17.5 10C17.5 14.1421 14.1421 17.5 10 17.5C5.85786 17.5 2.5 14.1421 2.5 10C2.5 5.85786 5.85786 2.5 10 2.5C14.1421 2.5 17.5 5.85786 17.5 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="activity-content">
+                    <div class="activity-title">Login suspeito bloqueado</div>
+                    <div class="activity-details">Frankfurt, Alemanha • IP: 85.214.132.XXX • Chrome em macOS</div>
+                    <div class="activity-time">17/05/2025 às 23:17</div>
+                </div>
+                <div class="activity-status status-danger">Bloqueado</div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-icon status-success">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16.6667 5L7.50004 14.1667L3.33337 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="activity-content">
+                    <div class="activity-title">Verificação de dispositivo aprovada</div>
+                    <div class="activity-details">São Paulo, Brasil • IP: 189.54.220.XXX • Android</div>
+                    <div class="activity-time">16/05/2025 às 08:42</div>
+                </div>
+                <div class="activity-status status-success">OK</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add interactivity to filter items
+        document.querySelectorAll('.filter-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const parent = this.parentElement;
+                parent.querySelectorAll('.filter-item').forEach(el => {
+                    el.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+
+        // Simple animation for chart bars on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const bars = document.querySelectorAll('.bar');
+            bars.forEach(bar => {
+                const height = bar.style.height;
+                bar.style.height = '0';
+                setTimeout(() => {
+                    bar.style.height = height;
+                }, 300);
+            });
+        });
+
+        // Export report button functionality
+        document.querySelector('.export-btn').addEventListener('click', function() {
+            alert('Relatório será gerado e enviado para seu email.');
+        });
+    </script>
+</body>
+</html>

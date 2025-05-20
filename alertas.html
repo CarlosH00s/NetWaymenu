@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alertas de Login</title>
+    <style>
+        /* Estilo global */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* Cabeçalho */
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .header-icon {
+            font-size: 3rem;
+            margin-right: 1.5rem;
+            color: #3498db;
+        }
+        
+        .header-title {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        
+        /* Seções */
+        .section {
+            margin-bottom: 2.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+            border-bottom: 1px solid #444;
+            padding-bottom: 0.5rem;
+        }
+        
+        /* Banner principal */
+        .main-banner {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            background-image: linear-gradient(135deg, #1e1e1e 25%, #252525 25%, #252525 50%, #1e1e1e 50%, #1e1e1e 75%, #252525 75%, #252525 100%);
+            background-size: 20px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .main-banner::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(30, 30, 30, 0.9);
+            z-index: 1;
+        }
+        
+        .banner-content {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .banner-image {
+            flex: 0 0 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Cards de tipos de alertas */
+        .alerts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .alert-card {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 4px solid #3498db;
+        }
+        
+        .alert-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
+        }
+        
+        .alert-title {
+            display: flex;
+            align-items: center;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #3498db;
+        }
+        
+        .alert-icon {
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+        }
+        
+        /* Exemplos de alertas */
+        .alert-examples {
+            margin-bottom: 2rem;
+        }
+        
+        .alert-example-item {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-left: 4px solid;
+            display: flex;
+            align-items: center;
+        }
+        
+        .example-normal {
+            border-color: #2ecc71;
+        }
+        
+        .example-suspicious {
+            border-color: #f39c12;
+        }
+        
+        .example-danger {
+            border-color: #e74c3c;
+        }
+        
+        .alert-example-icon {
+            font-size: 1.8rem;
+            margin-right: 1rem;
+            width: 50px;
+            text-align: center;
+        }
+        
+        .alert-example-content {
+            flex: 1;
+        }
+        
+        .alert-example-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .alert-example-details {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        .alert-example-time {
+            color: #888;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+        
+        .alert-example-action {
+            margin-left: 1rem;
+        }
+        
+        .alert-action-button {
+            background-color: transparent;
+            border: 1px solid #3498db;
+            color: #3498db;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .alert-action-button:hover {
+            background-color: #3498db;
+            color: #fff;
+        }
+        
+        /* Como configurar */
+        .setup-container {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .steps {
+            counter-reset: step-counter;
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .step {
+            margin-bottom: 1rem;
+            padding-left: 3rem;
+            position: relative;
+            counter-increment: step-counter;
+        }
+        
+        .step:before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            width: 2rem;
+            height: 2rem;
+            background-color: #3498db;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        /* Canais de notificação */
+        .channels-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .channel-card {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .channel-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .channel-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #3498db;
+        }
+        
+        .channel-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Preferências */
+        .preferences-container {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .preference-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid #333;
+        }
+        
+        .preference-item:last-child {
+            border-bottom: none;
+        }
+        
+        .preference-label {
+            display: flex;
+            align-items: center;
+        }
+        
+        .preference-icon {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            color: #3498db;
+        }
+        
+        .preference-description {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-top: 0.3rem;
+        }
+        
+        /* Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #444;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #3498db;
+        }
+        
+        input:focus + .slider {
+            box-shadow: 0 0 1px #3498db;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        /* Botão de Ação */
+        .cta-button {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background-color: #3498db;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .alerts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-banner {
+                flex-direction: column;
+            }
+            
+            .banner-image {
+                margin-top: 1.5rem;
+            }
+            
+            .alert-example-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .alert-example-icon {
+                margin-bottom: 1rem;
+            }
+            
+            .alert-example-action {
+                margin-left: 0;
+                margin-top: 1rem;
+                align-self: flex-end;
+            }
+            
+            .channels-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .channels-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .preference-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .switch {
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-icon">📱</div>
+            <div class="header-title">Alertas de Login</div>
+        </div>
+        
+        <div class="section">
+            <div class="main-banner">
+                <div class="banner-content">
+                    <h2>Mantenha-se informado sobre cada acesso à sua conta</h2>
+                    <p>Receba notificações instantâneas quando sua conta for acessada de um novo dispositivo ou localização.</p>
+                    <p>Nosso sistema de alertas de login proporciona monitoramento em tempo real, permitindo que você reaja rapidamente a qualquer atividade suspeita em sua conta.</p>
+                </div>
+                <div class="banner-image">
+                    <div style="font-size: 8rem;">🔔</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">Tipos de Alertas Disponíveis</h2>
+            <div class="alerts-grid">
+                <div class="alert-card">
+                    <div class="alert-title">
+                        <span class="alert-icon">📍</span>
+                        Alertas de Localização
+                    </div>
+                    <p>Receba notificações quando sua conta for acessada de uma localização geográfica incomum ou desconhecida.</p>
+                    <p>Nosso sistema detecta automaticamente padrões de localização e alerta sobre acessos fora do comum.</p>
+                </div>
+                
+                <div class="alert-card">
+                    <div class="alert-title">
+                        <span class="alert-icon">💻</span>
+                        Alertas de Dispositivo
+                    </div>
+                    <p>Seja notificado quando um novo dispositivo, navegador ou aplicativo for usado para acessar sua conta.</p>
+                    <p>Identifique imediatamente quando alguém além de você estiver tentando fazer login.</p>
+                </div>
+                
+                <div class="alert-card">
+                    <div class="alert-title">
+                        <span class="alert-icon">🕒</span>
+                        Alertas de Horário
+                    </div>
+                    <p>Seja informado sobre atividades em horários incomuns ou fora do seu padrão habitual de uso.</p>
+                    <p>Nosso sistema aprende seus hábitos e identifica anomalias temporais.</p>
+                </div>
+                
+                <div class="alert-card">
+                    <div class="alert-title">
+                        <span class="alert-icon">⚠️</span>
+                        Alertas de Atividades Suspeitas
+                    </div>
+                    <p>Receba notificações sobre comportamentos incomuns ou potencialmente maliciosos em sua conta.</p>
+                    <p>Algoritmos avançados de detecção de anomalias para proteger seus dados.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">Exemplos de Alertas</h2>
+            <div class="alert-examples">
+                <div class="alert-example-item example-normal">
+                    <div class="alert-example-icon">✅</div>
+                    <div class="alert-example-content">
+                        <div class="alert-example-title">Login Normal Detectado</div>
+                        <div class="alert-example-details">Login na sua conta a partir de São Paulo, Brasil usando Chrome no Windows</div>
+                        <div class="alert-example-time">Hoje, 14:35</div>
+                    </div>
+                    <div class="alert-example-action">
+                        <button class="alert-action-button">Detalhes</button>
+                    </div>
+                </div>
+                
+                <div class="alert-example-item example-suspicious">
+                    <div class="alert-example-icon">⚠️</div>
+                    <div class="alert-example-content">
+                        <div class="alert-example-title">Login Incomum Detectado</div>
+                        <div class="alert-example-details">Login na sua conta a partir de um novo dispositivo em Rio de Janeiro, Brasil</div>
+                        <div class="alert-example-time">Ontem, 23:12</div>
+                    </div>
+                    <div class="alert-example-action">
+                        <button class="alert-action-button">Verificar</button>
+                    </div>
+                </div>
+                
+                <div class="alert-example-item example-danger">
+                    <div class="alert-example-icon">❌</div>
+                    <div class="alert-example-content">
+                        <div class="alert-example-title">Atividade Suspeita Detectada</div>
+                        <div class="alert-example-details">Múltiplas tentativas de login malsucedidas a partir de Tóquio, Japão</div>
+                        <div class="alert-example-time">18/05/2025, 03:47</div>
+                    </div>
+                    <div class="alert-example-action">
+                        <button class="alert-action-button">Bloquear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">Como Configurar</h2>
+            <div class="setup-container">
+                <ol class="steps">
+                    <li class="step">
+                        <strong>Acesse configurações de segurança:</strong> Na página da sua conta, vá até "Configurações" e depois "Segurança".
+                    </li>
+                    <li class="step">
+                        <strong>Ative os alertas de login:</strong> Clique no botão "Ativar alertas de login" na seção de alertas.
+                    </li>
+                    <li class="step">
+                        <strong>Escolha seus canais de notificação:</strong> Selecione como deseja receber os alertas (e-mail, SMS, push).
+                    </li>
+                    <li class="step">
+                        <strong>Personalize suas preferências:</strong> Escolha quais tipos de alertas deseja receber e com qual frequência.
+                    </li>
+                    <li class="step">
+                        <strong>Confirme suas informações de contato:</strong> Verifique se seu e-mail e número de telefone estão atualizados.
+                    </li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">Canais de Notificação</h2>
+            <div class="channels-container">
+                <div class="channel-card">
+                    <div class="channel-icon">📧</div>
+                    <div class="channel-title">E-mail</div>
+                    <p>Receba alertas detalhados no seu endereço de e-mail cadastrado.</p>
+                </div>
+                
+                <div class="channel-card">
+                    <div class="channel-icon">💬</div>
+                    <div class="channel-title">SMS</div>
+                    <p>Alertas rápidos enviados diretamente para seu celular via mensagem de texto.</p>
+                </div>
+                
+                <div class="channel-card">
+                    <div class="channel-icon">📱</div>
+                    <div class="channel-title">Notificações Push</div>
+                    <p>Alertas instantâneos no seu dispositivo através do nosso aplicativo.</p>
+                </div>
+                
+                <div class="channel-card">
+                    <div class="channel-icon">🔔</div>
+                    <div class="channel-title">Notificações no Navegador</div>
+                    <p>Receba alertas diretamente no seu navegador quando estiver online.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">Preferências de Alertas</h2>
+            <div class="preferences-container">
+                <div class="preference-item">
+                    <div>
+                        <div class="preference-label">
+                            <span class="preference-icon">🌎</span>
+                            <strong>Alertas de nova localização</strong>
+                        </div>
+                        <div class="preference-description">Seja notificado quando sua conta for acessada de uma nova localização geográfica.</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="preference-item">
+                    <div>
+                        <div class="preference-label">
+                            <span class="preference-icon">📱</span>
+                            <strong>Alertas de novo dispositivo</strong>
+                        </div>
+                        <div class="preference-description">Receba notificações quando um novo dispositivo acessar sua conta.</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="preference-item">
+                    <div>
+                        <div class="preference-label">
+                            <span class="preference-icon">🔑</span>
+                            <strong>Tentativas de login malsucedidas</strong>
+                        </div>
+                        <div class="preference-description">Seja alertado sobre tentativas falhas de acesso à sua conta.</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="preference-item">
+                    <div>
+                        <div class="preference-label">
+                            <span class="preference-icon">⚙️</span>
+                            <strong>Alterações nas configurações de segurança</strong>
+                        </div>
+                        <div class="preference-description">Receba alertas quando houver mudanças nas configurações de segurança da sua conta.</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="preference-item">
+                    <div>
+                        <div class="preference-label">
+                            <span class="preference-icon">🕒</span>
+                            <strong>Logins em horários incomuns</strong>
+                        </div>
+                        <div class="preference-description">Seja notificado sobre acessos em horários fora do seu padrão habitual.</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <a href="segurança.html" button class="cta-button">Configurar Alertas de Login</button></a>
+    </div>
+    
+    <script>
+        // Script para a interatividade dos alertas de exemplo
+        document.querySelectorAll('.alert-action-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const alertItem = this.closest('.alert-example-item');
+                
+                if (this.textContent === 'Detalhes') {
+                    alert('Detalhes do login: Usuário acessou a conta pelo Chrome no Windows 11. Endereço IP: 189.54.220.XXX. Data e hora: 20/05/2025, 14:35');
+                } else if (this.textContent === 'Verificar') {
+                    const result = confirm('Este login foi realizado por você?');
+                    if (!result) {
+                        alert('Login reportado como não reconhecido. Medidas de segurança foram ativadas.');
+                    } else {
+                        alert('Login confirmado como legítimo. Obrigado pela verificação!');
+                    }
+                } else if (this.textContent === 'Bloquear') {
+                    alert('Acesso bloqueado com sucesso. Sua conta foi protegida e uma notificação foi enviada para seu e-mail.');
+                }
+            });
+        });
+        
+        // Script para as preferências de toggle
+        document.querySelectorAll('.switch input').forEach(toggle => {
+            toggle.addEventListener('change', function() {
+                const preferenceLabel = this.closest('.preference-item').querySelector('.preference-label strong').textContent;
+                if (this.checked) {
+                    console.log(`Preferência ativada: ${preferenceLabel}`);
+                } else {
+                    console.log(`Preferência desativada: ${preferenceLabel}`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,872 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Monitoramento</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #fff;
+        }
+        
+        .navbar {
+            background-color: #000;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #2a2a2a;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .nav-links {
+            display: flex;
+        }
+        
+        .nav-links a {
+            color: rgb(255, 255, 255);
+            text-decoration: none;
+            margin-left: 20px;
+        }
+        
+        .dashboard {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #4CAF50;
+            margin-right: 8px;
+        }
+        
+        .status-text {
+            font-size: 0.9rem;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #09c;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: #aaa;
+        }
+
+        .system-status {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .status-title {
+            margin: 0;
+            color: #09c;
+            font-size: 1.2rem;
+        }
+        
+        .status-time {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+        
+        .server-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .server-item {
+            background-color: #252525;
+            border-radius: 6px;
+            padding: 15px;
+            position: relative;
+        }
+        
+        .server-name {
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .server-status {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        
+        .status-online {
+            background-color: #4CAF50;
+        }
+        
+        .status-warning {
+            background-color: #FFC107;
+        }
+        
+        .status-offline {
+            background-color: #F44336;
+        }
+        
+        .server-metric {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .server-metric-label {
+            color: #aaa;
+        }
+        
+        .server-metric-value {
+            font-weight: bold;
+        }
+        
+        .high-value {
+            color: #F44336;
+        }
+        
+        .medium-value {
+            color: #FFC107;
+        }
+        
+        .normal-value {
+            color: #4CAF50;
+        }
+        
+        .charts-container {
+            margin-bottom: 30px;
+        }
+        
+        .charts {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .chart {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chart-title {
+            margin-top: 0;
+            color: #09c;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .chart-container {
+            height: 250px;
+            position: relative;
+        }
+        
+        .alerts {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .alerts-title {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #09c;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .alerts-count {
+            background-color: #ff3a3a;
+            color: white;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+        
+        .alert-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: 6px;
+            background-color: #252525;
+            margin-bottom: 10px;
+        }
+        
+        .alert-icon {
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .alert-info {
+            flex-grow: 1;
+        }
+        
+        .alert-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .alert-description {
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+        
+        .alert-time {
+            color: #aaa;
+            font-size: 0.8rem;
+            min-width: 80px;
+            text-align: right;
+        }
+        
+        .alert-critical {
+            border-left: 4px solid #F44336;
+        }
+        
+        .alert-warning {
+            border-left: 4px solid #FFC107;
+        }
+        
+        .alert-info-type {
+            border-left: 4px solid #09c;
+        }
+        
+        .traffic-monitor {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .traffic-title {
+            margin-top: 0;
+            color: #09c;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .traffic-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .traffic-stat {
+            text-align: center;
+        }
+        
+        .traffic-value {
+            font-size: 1.7rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .traffic-label {
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+        
+        .network-map {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .map-title {
+            margin-top: 0;
+            color: #09c;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .map-container {
+            height: 300px;
+            background-color: #252525;
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .map-placeholder {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #555;
+            text-align: center;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+        
+        .action-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        
+        .primary-button {
+            background-color: #09c;
+            color: white;
+        }
+        
+        .secondary-button {
+            background-color: #454545;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .charts {
+                grid-template-columns: 1fr;
+            }
+            
+            .traffic-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .status-indicator {
+                margin-top: 10px;
+            }
+        }
+
+       .network-map {
+  text-align: center;
+  margin: 40px 0;
+}
+
+.map-title {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: white; /* ou outro que combine com seu tema */
+}
+
+.map-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.map-placeholder {
+  max-width: 600px;
+  width: 100%;
+  padding: 20px;
+  background-color: #1e1e1e; /* fundo escuro (opcional) */
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.map-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  object-fit: cover;
+}
+
+
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">Net Way Monitor</div>
+        <div class="nav-links">
+            <a href="segurança.html">Voltar</a>
+        </div>
+    </div>
+    
+    <div class="dashboard">
+        <div class="header">
+            <h1>Dashboard de Monitoramento</h1>
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <div class="status-text">Todos os sistemas operacionais</div>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value">15k+</div>
+                <div class="stat-label">Usuários Ativos</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-value">99.9%</div>
+                <div class="stat-label">Tempo Online</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-value">5M+</div>
+                <div class="stat-label">Transações</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-value">24/7</div>
+                <div class="stat-label">Suporte</div>
+            </div>
+        </div>
+
+        <div class="system-status">
+            <div class="status-header">
+                <h3 class="status-title">Status dos Servidores</h3>
+                <div class="status-time">Última atualização: 16/05/2025 14:32</div>
+            </div>
+            <div class="server-grid">
+                <div class="server-item">
+                    <div class="server-name">
+                        <span>Web Server 01</span>
+                        <div class="server-status status-online"></div>
+                    </div>
+                    <div class="server-metric">
+                        <span class="server-metric-label">CPU</span>
+                        <span class="server-metric-value normal-value">23%</span>
+                    </div>
+                    <div class="server-metric">
+                        <span class="server-metric-label">RAM</span>
+                        <span class="server-metric-value normal-value">45%</span>
+                    </div>
+                    <div class="server-metric">
+                        <span class="server-metric-label">Disco</span>
+                        <span class="server-metric-value normal-value">38%</span>
+                    </div>
+                </div>
+                
+                <div class="server-item">
+                    <div class="server-name">
+                        <span>Web Server 02</span>
+                        <div class="server-status status-online"></div>
+                    </div>
+                    <div class="server-metric">
+                        <span class="server-metric-label">CPU</span>
+                        <span class="server-metric-value normal-value">18%</span>
+                    </div>
+                    <div class="server-metric">
+                        <span class="server-metric-label">RAM</span>
+                        <span class="server-metric-value normal-value">37%</span>
+                    </div>
+                    <div class="server-metric">
+                        <span class="server-metric-label">Disco</span>
+                        <span class="server-metric-value normal-value">42%</span>
+                    </div>
+                </div>
+                
+                <div class="server-item">
+                    <div class="server-name">
+                        <span>Database 01</span>
+                        <div class="server-status status-warning"></div>
+                    </div>
+                    <div class="server-metric">
+                        <span class="server-metric-label">CPU</span>
+                        <span class="server-metric-value medium-value">72%</span>
+                    </div>
+                    <div class="server-metric">
+                        <span class="server-metric-label">RAM</span>
+                        <span class="server-metric-value medium-value">83%</span>
+                    </div>
+                    <div class="server-metric">
+                        <span class="server-metric-label">Disco</span>
+                        <span class="server-metric-value medium-value">76%</span>
+                    </div>
+                </div>
+                
+                <div class="server-item">
+                    <div class="server-name">
+                        <span>Database 02</span>
+                        <div class="server-status status-online"></div>
+                    </div>
+                    <div class="server-metric">
+                        <span class="server-metric-label">CPU</span>
+                        <span class="server-metric-value normal-value">45%</span>
+                    </div>
+                    <div class="server-metric">
+                        <span class="server-metric-label">RAM</span>
+                        <span class="server-metric-value normal-value">52%</span>
+                    </div>
+                    <div class="server-metric">
+                        <span class="server-metric-label">Disco</span>
+                        <span class="server-metric-value normal-value">48%</span>
+                    </div>
+                </div>
+                
+                <div class="server-item">
+                    <div class="server-name">
+                        <span>App Server 01</span>
+                        <div class="server-status status-offline"></div>
+                    </div>
+                    <div class="server-metric">
+                        <span class="server-metric-label">CPU</span>
+                        <span class="server-metric-value high-value">0%</span>
+                    </div>
+                    <div class="server-metric">
+                        <span class="server-metric-label">RAM</span>
+                        <span class="server-metric-value high-value">0%</span>
+                    </div>
+                    <div class="server-metric">
+                        <span class="server-metric-label">Disco</span>
+                        <span class="server-metric-value high-value">0%</span>
+                    </div>
+                </div>
+                
+                <div class="server-item">
+                    <div class="server-name">
+                        <span>CDN Server</span>
+                        <div class="server-status status-online"></div>
+                    </div>
+                    <div class="server-metric">
+                        <span class="server-metric-label">CPU</span>
+                        <span class="server-metric-value normal-value">32%</span>
+                    </div>
+                    <div class="server-metric">
+                        <span class="server-metric-label">RAM</span>
+                        <span class="server-metric-value normal-value">46%</span>
+                    </div>
+                    <div class="server-metric">
+                        <span class="server-metric-label">Disco</span>
+                        <span class="server-metric-value normal-value">53%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="charts-container">
+            <div class="charts">
+                <div class="chart">
+                    <h3 class="chart-title">Desempenho da Rede</h3>
+                    <div class="chart-container">
+                        <canvas id="networkChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart">
+                    <h3 class="chart-title">Uso de Recursos</h3>
+                    <div class="chart-container">
+                        <canvas id="resourcesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="alerts">
+            <div class="alerts-title">
+                <span>Alertas Recentes</span>
+                <div class="alerts-count">3</div>
+            </div>
+            
+            <div class="alert-item alert-critical">
+                <div class="alert-icon">🔴</div>
+                <div class="alert-info">
+                    <div class="alert-title">App Server 01 offline</div>
+                    <div class="alert-description">O servidor não está respondendo. Tentativas de reconexão falharam.</div>
+                </div>
+                <div class="alert-time">14:28</div>
+            </div>
+            
+            <div class="alert-item alert-warning">
+                <div class="alert-icon">⚠️</div>
+                <div class="alert-info">
+                    <div class="alert-title">Uso elevado de recursos no Database 01</div>
+                    <div class="alert-description">O uso de CPU está acima de 70% nos últimos 15 minutos.</div>
+                </div>
+                <div class="alert-time">14:05</div>
+            </div>
+            
+            <div class="alert-item alert-info-type">
+                <div class="alert-icon">ℹ️</div>
+                <div class="alert-info">
+                    <div class="alert-title">Backup automático concluído</div>
+                    <div class="alert-description">Backup diário concluído com sucesso para todos os servidores.</div>
+                </div>
+                <div class="alert-time">13:30</div>
+            </div>
+        </div>
+        
+        <div class="traffic-monitor">
+            <h3 class="traffic-title">Monitoramento de Tráfego</h3>
+            
+            <div class="traffic-stats">
+                <div class="traffic-stat">
+                    <div class="traffic-value" style="color: #4CAF50;">3.2 GB/s</div>
+                    <div class="traffic-label">Download</div>
+                </div>
+                
+                <div class="traffic-stat">
+                    <div class="traffic-value" style="color: #FFC107;">1.8 GB/s</div>
+                    <div class="traffic-label">Upload</div>
+                </div>
+                
+                <div class="traffic-stat">
+                    <div class="traffic-value" style="color: #09c;">12.5k</div>
+                    <div class="traffic-label">Requisições/s</div>
+                </div>
+                
+                <div class="traffic-stat">
+                    <div class="traffic-value" style="color: #F44336;">0.05%</div>
+                    <div class="traffic-label">Taxa de Erro</div>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="trafficChart"></canvas>
+            </div>
+        </div>
+      
+
+        
+       
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script>
+        // Dados de exemplo para os gráficos
+        const networkCtx = document.getElementById('networkChart').getContext('2d');
+        const networkChart = new Chart(networkCtx, {
+            type: 'line',
+            data: {
+                labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+                datasets: [{
+                    label: 'Latência (ms)',
+                    data: [15, 12, 25, 18, 10, 22],
+                    borderColor: '#09c',
+                    backgroundColor: 'rgba(0, 153, 204, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }, {
+                    label: 'Pacotes Perdidos (%)',
+                    data: [0.2, 0.5, 0.1, 0.3, 0.2, 0.4],
+                    borderColor: '#ffcc00',
+                    backgroundColor: 'rgba(255, 204, 0, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: '#aaa'
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            color: '#2a2a2a'
+                        },
+                        ticks: {
+                            color: '#aaa'
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: '#2a2a2a'
+                        },
+                        ticks: {
+                            color: '#aaa'
+                        }
+                    }
+                }
+            }
+        });
+        
+        const resourcesCtx = document.getElementById('resourcesChart').getContext('2d');
+        const resourcesChart = new Chart(resourcesCtx, {
+            type: 'bar',
+            data: {
+                labels: ['CPU', 'Memória', 'Disco', 'Rede'],
+                datasets: [{
+                    label: 'Uso Atual (%)',
+                    data: [45, 68, 32, 78],
+                    backgroundColor: [
+                        'rgba(0, 153, 204, 0.8)',
+                        'rgba(0, 204, 153, 0.8)',
+                        'rgba(153, 102, 255, 0.8)',
+                        'rgba(255, 204, 0, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(0, 153, 204, 1)',
+                        'rgba(0, 204, 153, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 204, 0, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            color: '#2a2a2a'
+                        },
+                        ticks: {
+                            color: '#aaa'
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: '#2a2a2a'
+                        },
+                        ticks: {
+                            color: '#aaa'
+                        },
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+        
+        const trafficCtx = document.getElementById('trafficChart').getContext('2d');
+        const trafficChart = new Chart(trafficCtx, {
+            type: 'line',
+            data: {
+                labels: ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00'],
+                datasets: [{
+                    label: 'Download (GB/s)',
+                    data: [2.1, 2.5, 3.0, 2.8, 3.2, 3.4],
+                    borderColor: '#4CAF50',
+                    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }, {
+                    label: 'Upload (GB/s)',
+                    data: [1.2, 1.5, 1.7, 1.6, 1.8, 1.9],
+                    borderColor: '#FFC107',
+                    backgroundColor: 'rgba(255, 193, 7, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: '#aaa'
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            color: '#2a2a2a'
+                        },
+                        ticks: {
+                            color: '#aaa'
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: '#2a2a2a'
+                        },
+                        ticks: {
+                            color: '#aaa'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

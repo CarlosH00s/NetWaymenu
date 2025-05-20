@@ -1,0 +1,328 @@
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #121212;
+        color: #ffffff;
+    }
+    
+    .security-settings {
+        background-color: #1e1e1e;
+        border-radius: 8px;
+        padding: 30px;
+        margin: 20px;
+    }
+    
+    .security-settings h2 {
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-size: 22px;
+    }
+    
+    .setting-group {
+        margin-bottom: 30px;
+    }
+    
+    .setting-group h3 {
+        margin-bottom: 15px;
+        font-size: 18px;
+        color: #09a7e1;
+    }
+    
+    .setting-option {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid #333;
+    }
+    
+    .setting-option:last-child {
+        border-bottom: none;
+    }
+    
+    .setting-option .option-name {
+        font-weight: bold;
+    }
+    
+    .setting-option .option-description {
+        color: #bbbbbb;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+    
+    .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 24px;
+    }
+    
+    .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    
+    .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #333;
+        transition: .4s;
+        border-radius: 24px;
+    }
+    
+    .toggle-slider:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+    
+    input:checked + .toggle-slider {
+        background-color: #09a7e1;
+    }
+    
+    input:checked + .toggle-slider:before {
+        transform: translateX(26px);
+    }
+    
+    .btn-save {
+        background-color: #09a7e1;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        display: block;
+        margin: 30px auto 0;
+        transition: background-color 0.3s ease;
+    }
+    
+    .btn-save:hover {
+        background-color: #0782b0;
+    }
+    
+    .security-status {
+        display: flex;
+        justify-content: space-around;
+        margin: 40px 20px;
+        text-align: center;
+    }
+    
+    .status-item {
+        flex: 1;
+        padding: 20px;
+    }
+    
+    .status-item .value {
+        font-size: 32px;
+        font-weight: bold;
+        color: #09a7e1;
+        margin-bottom: 10px;
+    }
+    
+    .status-item .label {
+        color: #bbbbbb;
+    }
+    
+    @media (max-width: 768px) {
+        .security-status {
+            flex-direction: column;
+            gap: 20px;
+        }
+    }
+
+    .btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn-save {
+  background-color: #03a9f4; /* Cor azul */
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-save:hover {
+  background-color: #0288d1; /* Azul um pouco mais escuro */
+  transform: scale(1.05);
+}
+
+</style>
+
+<div class="security-settings">
+    <h2>Configurações de Criptografia</h2>
+    
+    <div class="setting-group">
+        <h3>Métodos de Criptografia</h3>
+        
+        <div class="setting-option">
+            <div>
+                <div class="option-name">AES-256</div>
+                <div class="option-description">Algoritmo de criptografia simétrica de alta segurança</div>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox" checked>
+                <span class="toggle-slider"></span>
+            </label>
+        </div>
+        
+        <div class="setting-option">
+            <div>
+                <div class="option-name">RSA-4096</div>
+                <div class="option-description">Criptografia assimétrica para troca segura de chaves</div>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox" checked>
+                <span class="toggle-slider"></span>
+            </label>
+        </div>
+        
+        <div class="setting-option">
+            <div>
+                <div class="option-name">ChaCha20-Poly1305</div>
+                <div class="option-description">Algoritmo de criptografia de alto desempenho</div>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox">
+                <span class="toggle-slider"></span>
+            </label>
+        </div>
+    </div>
+    
+    <div class="setting-group">
+        <h3>Proteção Adicional</h3>
+        
+        <div class="setting-option">
+            <div>
+                <div class="option-name">Autenticação de Dois Fatores</div>
+                <div class="option-description">Adicione uma camada extra de segurança na autenticação</div>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox" checked>
+                <span class="toggle-slider"></span>
+            </label>
+        </div>
+        
+        <div class="setting-option">
+            <div>
+                <div class="option-name">Rotação Automática de Chaves</div>
+                <div class="option-description">Atualize suas chaves automaticamente a cada 30 dias</div>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox" checked>
+                <span class="toggle-slider"></span>
+            </label>
+        </div>
+        
+        <div class="setting-option">
+            <div>
+                <div class="option-name">Hash Verificável</div>
+                <div class="option-description">Verifique a integridade dos dados com hashes SHA-256</div>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox">
+                <span class="toggle-slider"></span>
+            </label>
+        </div>
+    </div>
+    
+    <div class="setting-group">
+        <h3>Políticas de Acesso</h3>
+        
+        <div class="setting-option">
+            <div>
+                <div class="option-name">Restrição por IP</div>
+                <div class="option-description">Limite o acesso a endereços IP específicos</div>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox">
+                <span class="toggle-slider"></span>
+            </label>
+        </div>
+        
+        <div class="setting-option">
+            <div>
+                <div class="option-name">Tempo Máximo de Sessão</div>
+                <div class="option-description">Encerre sessões inativas após 30 minutos</div>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox" checked>
+                <span class="toggle-slider"></span>
+            </label>
+        </div>
+        
+        <div class="setting-option">
+            <div>
+                <div class="option-name">Registro de Atividades</div>
+                <div class="option-description">Mantenha um registro detalhado de todas as atividades</div>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox" checked>
+                <span class="toggle-slider"></span>
+            </label>
+        </div>
+
+  <div class="btn-container">
+  <a href="segurança.html" class="btn-save">Salvar Configurações</a>
+</div>
+
+
+<div class="security-status">
+    <div class="status-item">
+        <div class="value">100%</div>
+        <div class="label">Proteção de Dados</div>
+    </div>
+    
+    <div class="status-item">
+        <div class="value">0</div>
+        <div class="label">Vulnerabilidades Detectadas</div>
+    </div>
+    
+    <div class="status-item">
+        <div class="value">24/7</div>
+        <div class="label">Monitoramento</div>
+    </div>
+    
+    <div class="status-item">
+        <div class="value">30 dias</div>
+        <div class="label">Última Atualização</div>
+    </div>
+</div>
+
+<script>
+    // Script para ativar/desativar opções
+    const toggles = document.querySelectorAll('input[type="checkbox"]');
+    
+    toggles.forEach(toggle => {
+        toggle.addEventListener('change', function() {
+            // Aqui seria implementada a lógica para salvar as configurações
+            console.log('Configuração alterada:', this.checked);
+        });
+    });
+    
+    // Script para o botão de salvar
+    const saveButton = document.querySelector('.btn-save');
+    
+    saveButton.addEventListener('click', function() {
+        alert('Configurações salvas com sucesso!');
+    });
+</script>

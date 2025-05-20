@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proteção contra Invasões</title>
+    <style>
+        /* Estilo global */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* Cabeçalho */
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .header-icon {
+            font-size: 3rem;
+            margin-right: 1.5rem;
+            color: #ff4d4d;
+        }
+        
+        .header-title {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        
+        /* Seções */
+        .section {
+            margin-bottom: 2.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+            border-bottom: 1px solid #444;
+            padding-bottom: 0.5rem;
+        }
+        
+        /* Cartões de recursos */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .feature-card {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
+        }
+        
+        .feature-title {
+            display: flex;
+            align-items: center;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #ff4d4d;
+        }
+        
+        .feature-icon {
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+        }
+        
+        .feature-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .feature-list li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4CAF50;
+        }
+        
+        /* Como funciona */
+        .how-it-works {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .steps {
+            counter-reset: step-counter;
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .step {
+            margin-bottom: 1rem;
+            padding-left: 3rem;
+            position: relative;
+            counter-increment: step-counter;
+        }
+        
+        .step:before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            width: 2rem;
+            height: 2rem;
+            background-color: #ff4d4d;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        /* Benefícios */
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .benefit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .benefit-icon {
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
+            color: #4CAF50;
+        }
+        
+        /* Painel e Suporte */
+        .support-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .support-panel-card {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        
+        .support-panel-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+        
+        /* Botão de Ação */
+        .cta-button {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background-color: #ff4d4d;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            background-color: #e63939;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .features-grid, 
+            .support-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-icon">🛡️</div>
+            <div class="header-title">Proteção contra Invasões</div>
+        </div>
+        
+        <div class="section">
+            <p>Nossa solução de proteção contra invasões oferece uma defesa abrangente para seu ambiente digital, combinando tecnologias avançadas de firewall, sistemas anti-DDoS e monitoramento proativo para garantir a integridade de sua infraestrutura.</p>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">Recursos Principais</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-title">
+                        <span class="feature-icon">🔥</span>
+                        Firewall de Última Geração
+                    </div>
+                    <ul class="feature-list">
+                        <li>Análise de Pacotes em Profundidade</li>
+                        <li>Regras Personalizáveis</li>
+                        <li>Filtragem Inteligente</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-title">
+                        <span class="feature-icon">🌊</span>
+                        Proteção Anti-DDoS Avançada
+                    </div>
+                    <ul class="feature-list">
+                        <li>Mitigação Instantânea</li>
+                        <li>Ampla Capacidade de Absorção</li>
+                        <li>Proteção em Camadas</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-title">
+                        <span class="feature-icon">🔍</span>
+                        Prevenção de Intrusão (IPS)
+                    </div>
+                    <ul class="feature-list">
+                        <li>Detecção de Anomalias</li>
+                        <li>Atualização Automática</li>
+                        <li>Resposta Imediata</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-title">
+                        <span class="feature-icon">💻</span>
+                        Monitoramento de Endpoints
+                    </div>
+                    <ul class="feature-list">
+                        <li>Proteção Completa</li>
+                        <li>Controle de Acesso</li>
+                        <li>Detecção de Comportamentos Suspeitos</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">Como Funciona</h2>
+            <div class="how-it-works">
+                <ol class="steps">
+                    <li class="step">
+                        <strong>Análise de Tráfego:</strong> Todo o tráfego de entrada e saída é analisado em tempo real
+                    </li>
+                    <li class="step">
+                        <strong>Avaliação de Ameaças:</strong> Algoritmos avançados identificam padrões suspeitos e potenciais ataques
+                    </li>
+                    <li class="step">
+                        <strong>Resposta Automática:</strong> Medidas defensivas são implementadas automaticamente para neutralizar ameaças
+                    </li>
+                    <li class="step">
+                        <strong>Notificação:</strong> Alertas instantâneos são enviados sobre incidentes detectados
+                    </li>
+                    <li class="step">
+                        <strong>Relatórios:</strong> Documentação detalhada de todos os eventos de segurança para análise posterior
+                    </li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">Benefícios</h2>
+            <div class="benefits">
+                <div class="benefit">
+                    <div class="benefit-icon">⏱️</div>
+                    <strong>Continuidade Operacional</strong>
+                    <p>Minimize tempos de inatividade causados por ataques</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">🔒</div>
+                    <strong>Proteção de Dados</strong>
+                    <p>Salvaguarde informações sensíveis contra acessos não autorizados</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">📋</div>
+                    <strong>Conformidade Regulatória</strong>
+                    <p>Ajuda a atender requisitos de segurança de várias regulamentações</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">😌</div>
+                    <strong>Tranquilidade</strong>
+                    <p>Tenha a certeza de que sua infraestrutura está protegida 24/7</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">🏆</div>
+                    <strong>Reputação Preservada</strong>
+                    <p>Evite danos à imagem de sua organização causados por violações de segurança</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">Gestão e Suporte</h2>
+            <div class="support-panel">
+                <div class="support-panel-card">
+                    <h3 class="support-panel-title">Painel de Controle</h3>
+                    <p>Através de nosso dashboard intuitivo, você pode:</p>
+                    <ul class="feature-list">
+                        <li>Visualizar tentativas de invasão em tempo real</li>
+                        <li>Analisar estatísticas de ameaças bloqueadas</li>
+                        <li>Configurar políticas de segurança personalizadas</li>
+                        <li>Acessar relatórios detalhados de incidentes</li>
+                        <li>Gerenciar alertas e notificações</li>
+                    </ul>
+                </div>
+                
+                <div class="support-panel-card">
+                    <h3 class="support-panel-title">Suporte Especializado</h3>
+                    <p>Nossa equipe de especialistas em segurança está disponível 24/7 para:</p>
+                    <ul class="feature-list">
+                        <li>Responder rapidamente a incidentes críticos</li>
+                        <li>Fornecer orientação sobre melhores práticas de segurança</li>
+                        <li>Ajudar na configuração ideal para seu ambiente</li>
+                        <li>Realizar análises periódicas de vulnerabilidades</li>
+                        <li>Oferecer treinamento para sua equipe</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    <a href="segurança.html" button class="cta-button">Ativar Proteção Avançada</button> </a>
+    </div>
+</body>
+</html>

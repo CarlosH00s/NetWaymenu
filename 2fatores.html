@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autenticação de Dois Fatores</title>
+    <style>
+        /* Estilo global */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* Cabeçalho */
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .header-icon {
+            font-size: 3rem;
+            margin-right: 1.5rem;
+            color: #ffb700;
+        }
+        
+        .header-title {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        
+        /* Seções */
+        .section {
+            margin-bottom: 2.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+            border-bottom: 1px solid #444;
+            padding-bottom: 0.5rem;
+        }
+        
+        /* Banner principal */
+        .main-banner {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .banner-content {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .banner-image {
+            flex: 0 0 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+        
+        .banner-image img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        /* Cartões de métodos */
+        .methods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .method-card {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .method-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
+        }
+        
+        .method-title {
+            display: flex;
+            align-items: center;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #ffb700;
+        }
+        
+        .method-icon {
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+        }
+        
+        .feature-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .feature-list li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4CAF50;
+        }
+        
+        /* Como configurar */
+        .setup-container {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .steps {
+            counter-reset: step-counter;
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .step {
+            margin-bottom: 1rem;
+            padding-left: 3rem;
+            position: relative;
+            counter-increment: step-counter;
+        }
+        
+        .step:before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            width: 2rem;
+            height: 2rem;
+            background-color: #ffb700;
+            color: black;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        /* Benefícios */
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .benefit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .benefit-icon {
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
+            color: #4CAF50;
+        }
+        
+        /* FAQ */
+        .faq-container {
+            margin-bottom: 2rem;
+        }
+        
+        .faq-item {
+            margin-bottom: 1rem;
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 1rem;
+            background-color: #2a2a2a;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-question:after {
+            content: "+";
+            font-size: 1.2rem;
+        }
+        
+        .faq-answer {
+            padding: 1rem;
+            border-top: 1px solid #333;
+        }
+        
+        /* Botão de Ação */
+        .cta-button {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background-color: #ffb700;
+            color: black;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            background-color: #e6a500;
+        }
+        
+        /* Dispositivos compatíveis */
+        .devices-container {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .devices-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .device-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100px;
+        }
+        
+        .device-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .methods-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-banner {
+                flex-direction: column;
+            }
+            
+            .banner-image {
+                margin-top: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-icon">🔑</div>
+            <div class="header-title">Autenticação de Dois Fatores</div>
+        </div>
+        
+        <div class="section">
+            <div class="main-banner">
+                <div class="banner-content">
+                    <h2>Mantenha sua conta segura com uma camada extra de proteção</h2>
+                    <p>A autenticação de dois fatores adiciona uma etapa de verificação adicional ao processo de login, garantindo que mesmo se suas credenciais primárias forem comprometidas, sua conta permanecerá protegida.</p>
+                    <p>Ao entrar em sua conta, você fornecerá não apenas sua senha, mas também um segundo código de verificação que apenas você pode acessar, tornando impossível para invasores obterem acesso não autorizado.</p>
+                </div>
+                <div class="banner-image">
+                    <div style="font-size: 8rem;">🔐</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">Métodos de Verificação Disponíveis</h2>
+            <div class="methods-grid">
+                <div class="method-card">
+                    <div class="method-title">
+                        <span class="method-icon">📱</span>
+                        Aplicativo Autenticador
+                    </div>
+                    <p>Use aplicativos como Google Authenticator, Microsoft Authenticator ou Authy para gerar códigos temporários.</p>
+                    <ul class="feature-list">
+                        <li>Funciona sem conexão à internet</li>
+                        <li>Códigos gerados a cada 30 segundos</li>
+                        <li>Método mais seguro disponível</li>
+                    </ul>
+                </div>
+                
+                <div class="method-card">
+                    <div class="method-title">
+                        <span class="method-icon">💬</span>
+                        SMS
+                    </div>
+                    <p>Receba códigos de verificação diretamente no seu telefone via mensagem de texto.</p>
+                    <ul class="feature-list">
+                        <li>Não requer instalação de aplicativos</li>
+                        <li>Funciona em qualquer celular</li>
+                        <li>Fácil de configurar e usar</li>
+                    </ul>
+                </div>
+                
+                <div class="method-card">
+                    <div class="method-title">
+                        <span class="method-icon">📧</span>
+                        E-mail
+                    </div>
+                    <p>Receba códigos de verificação no seu endereço de e-mail cadastrado.</p>
+                    <ul class="feature-list">
+                        <li>Não requer dispositivo móvel</li>
+                        <li>Acessível de qualquer dispositivo</li>
+                        <li>Familiar e fácil de usar</li>
+                    </ul>
+                </div>
+                
+                <div class="method-card">
+                    <div class="method-title">
+                        <span class="method-icon">🔑</span>
+                        Chave de Segurança Física
+                    </div>
+                    <p>Use dispositivos físicos como YubiKey ou Google Titan para autenticação com um toque.</p>
+                    <ul class="feature-list">
+                        <li>Proteção contra phishing</li>
+                        <li>Não requer bateria ou conexão</li>
+                        <li>Extremamente seguro e conveniente</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">Como Configurar</h2>
+            <div class="setup-container">
+                <ol class="steps">
+                    <li class="step">
+                        <strong>Acesse configurações de segurança:</strong> Na página da sua conta, vá até "Configurações" e depois "Segurança".
+                    </li>
+                    <li class="step">
+                        <strong>Ative a autenticação de dois fatores:</strong> Clique no botão "Ativar autenticação de dois fatores".
+                    </li>
+                    <li class="step">
+                        <strong>Escolha seu método preferido:</strong> Selecione entre aplicativo autenticador, SMS, e-mail ou chave de segurança.
+                    </li>
+                    <li class="step">
+                        <strong>Siga as instruções específicas:</strong> Configure o método escolhido seguindo o passo a passo na tela.
+                    </li>
+                    <li class="step">
+                        <strong>Salve seus códigos de recuperação:</strong> Guarde os códigos de backup em um local seguro para casos de emergência.
+                    </li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">Benefícios</h2>
+            <div class="benefits">
+                <div class="benefit">
+                    <div class="benefit-icon">🛡️</div>
+                    <strong>Segurança Reforçada</strong>
+                    <p>Reduz drasticamente as chances de acesso não autorizado</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">⚠️</div>
+                    <strong>Alertas de Tentativas</strong>
+                    <p>Saiba quando alguém tenta acessar sua conta</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">☁️</div>
+                    <strong>Proteção na Nuvem</strong>
+                    <p>Mantenha seus dados na nuvem mais seguros</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">🔄</div>
+                    <strong>Recuperação Segura</strong>
+                    <p>Opções de recuperação de conta aprimoradas</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">✅</div>
+                    <strong>Conformidade</strong>
+                    <p>Atende a requisitos de segurança regulatórios</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">Dispositivos Compatíveis</h2>
+            <div class="devices-container">
+                <p>Nossa autenticação de dois fatores funciona em praticamente qualquer dispositivo:</p>
+                <div class="devices-list">
+                    <div class="device-item">
+                        <div class="device-icon">📱</div>
+                        <span>Smartphones</span>
+                    </div>
+                    <div class="device-item">
+                        <div class="device-icon">💻</div>
+                        <span>Notebooks</span>
+                    </div>
+                    <div class="device-item">
+                        <div class="device-icon">🖥️</div>
+                        <span>Desktops</span>
+                    </div>
+                    <div class="device-item">
+                        <div class="device-icon">📟</div>
+                        <span>Tablets</span>
+                    </div>
+                    <div class="device-item">
+                        <div class="device-icon">⌚</div>
+                        <span>Smartwatches</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">Perguntas Frequentes</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">O que acontece se eu perder meu dispositivo?</div>
+                    <div class="faq-answer">
+                        <p>Se você perder o dispositivo utilizado para a autenticação de dois fatores, poderá usar os códigos de recuperação fornecidos durante a configuração. Por isso é importante salvá-los em um local seguro. Alternativamente, você pode entrar em contato com nosso suporte para ajudar na recuperação da sua conta.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">A autenticação de dois fatores torna o login mais demorado?</div>
+                    <div class="faq-answer">
+                        <p>Adiciona apenas alguns segundos ao processo de login, mas oferece uma segurança significativamente maior. Muitos usuários também podem configurar dispositivos confiáveis para reduzir a frequência de verificação em equipamentos que usam regularmente.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">Isso é realmente necessário para minha conta?</div>
+                    <div class="faq-answer">
+                        <p>Absolutamente recomendado. Com o aumento constante de violações de dados e ataques de phishing, senhas sozinhas não são mais suficientes para proteger contas. A autenticação de dois fatores é considerada essencial por especialistas em segurança para qualquer conta que contenha informações pessoais ou confidenciais.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">Posso usar mais de um método de autenticação?</div>
+                    <div class="faq-answer">
+                        <p>Sim, recomendamos configurar métodos secundários de autenticação como backup. Por exemplo, você pode usar principalmente um aplicativo autenticador, mas também ter a opção de SMS como alternativa caso não tenha acesso ao aplicativo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <a href="segurança.html" button class="cta-button">Ativar Verificação em 2 Etapas</button>></a>
+    </div>
+    
+    <script>
+        // Script simples para fazer os FAQs expandirem/contraírem
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const display = window.getComputedStyle(answer).display;
+                
+                if (display === "none") {
+                    answer.style.display = "block";
+                    question.style.borderBottomLeftRadius = "0";
+                    question.style.borderBottomRightRadius = "0";
+                    question.textContent = question.textContent.replace("+", "-");
+                } else {
+                    answer.style.display = "none";
+                    question.style.borderBottomLeftRadius = "8px";
+                    question.style.borderBottomRightRadius = "8px";
+                    question.textContent = question.textContent.replace("-", "+");
+                }
+            });
+        });
+        
+        // Esconde todas as respostas inicialmente
+        document.querySelectorAll('.faq-answer').forEach(answer => {
+            answer.style.display = "none";
+        });
+    </script>
+</body>
+</html>

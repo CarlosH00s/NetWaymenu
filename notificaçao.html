@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Net Way - Notificações</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #0c0c0c;
+            color: #e0e0e0;
+        }
+        
+        .header {
+            background-color: #0c0c0c;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .nav {
+            display: flex;
+        }
+        
+        .nav a {
+            color: #3498db;
+            text-decoration: none;
+            margin-left: 25px;
+            padding: 5px 0;
+        }
+        
+        .nav a.active {
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 28px;
+        }
+        
+        .notifications-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .notifications-filters {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .filter-button {
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            color: #aaa;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        
+        .filter-button:hover, .filter-button.active {
+            background-color: #2a2a2a;
+            color: white;
+        }
+        
+        .filter-button.active {
+            border-color: #3498db;
+            color: #3498db;
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-input {
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            width: 220px;
+        }
+        
+        .notification-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .notification-card {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            gap: 15px;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+        
+        .notification-card:hover {
+            background-color: #242424;
+        }
+        
+        .notification-card.unread {
+            border-left: 3px solid #3498db;
+        }
+        
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(52, 152, 219, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3498db;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        
+        .notification-icon.alert {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+        
+        .notification-icon.info {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+        }
+        
+        .notification-icon.warning {
+            background-color: rgba(243, 156, 18, 0.2);
+            color: #f39c12;
+        }
+        
+        .notification-content {
+            flex: 1;
+        }
+        
+        .notification-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+        
+        .notification-message {
+            color: #aaa;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        
+        .notification-time {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .notification-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .action-button {
+            background-color: transparent;
+            border: 1px solid #444;
+            color: #aaa;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+        
+        .action-button:hover {
+            background-color: #2a2a2a;
+            color: white;
+        }
+        
+        .action-button.primary {
+            border-color: #3498db;
+            color: #3498db;
+        }
+        
+        .action-button.primary:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+        
+        .notification-options {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            cursor: pointer;
+            color: #666;
+            font-size: 18px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .badge-success {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+        }
+        
+        .badge-warning {
+            background-color: rgba(243, 156, 18, 0.2);
+            color: #f39c12;
+        }
+        
+        .badge-danger {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+        
+        .badge-info {
+            background-color: rgba(52, 152, 219, 0.2);
+            color: #3498db;
+        }
+        
+        .notifications-settings {
+            margin-top: 40px;
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .settings-title {
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #333;
+        }
+        
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+        
+        .settings-label {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .settings-name {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .settings-description {
+            font-size: 12px;
+            color: #888;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #444;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #3498db;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+            gap: 5px;
+        }
+        
+        .page-item {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .page-item:hover {
+            background-color: #242424;
+        }
+        
+        .page-item.active {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .page-arrow {
+            color: #666;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 50px 0;
+            color: #888;
+        }
+        
+        .empty-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Net Way</div>
+        <div class="nav">
+            <a href="inicio.html">Voltar Ao Início</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h1 class="page-title">Notificações</h1>
+        
+        <div class="notifications-header">
+            <div class="notifications-filters">
+                <button class="filter-button active">Todas</button>
+                <button class="filter-button">Não lidas <span class="badge badge-info">12</span></button>
+                <button class="filter-button">Alertas <span class="badge badge-danger">4</span></button>
+                <button class="filter-button">Sistema</button>
+                <button class="filter-button">Segurança</button>
+            </div>
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="Buscar notificações...">
+            </div>
+        </div>
+        
+        <div class="notification-list">
+            <div class="notification-card unread">
+                <div class="notification-icon alert">!</div>
+                <div class="notification-content">
+                    <div class="notification-title">Alerta crítico do CDN <span class="badge badge-danger">Crítico</span></div>
+                    <div class="notification-message">O serviço CDN está apresentando instabilidade. A equipe técnica já foi notificada e está trabalhando para resolver o problema o mais rápido possível.</div>
+                    <div class="notification-time">Hoje, 14:02</div>
+                    <div class="notification-actions">
+                        <button class="action-button primary">Ver detalhes</button>
+                        <button class="action-button">Marcar como lida</button>
+                    </div>
+                </div>
+                <div class="notification-options">⋮</div>
+            </div>
+            
+            <div class="notification-card unread">
+                <div class="notification-icon warning">!</div>
+                <div class="notification-content">
+                    <div class="notification-title">Atenção no Servidor Web <span class="badge badge-warning">Atenção</span></div>
+                    <div class="notification-message">O servidor web está com carga acima do normal. Recomendamos monitorar o desempenho nas próximas horas.</div>
+                    <div class="notification-time">Hoje, 12:15</div>
+                    <div class="notification-actions">
+                        <button class="action-button primary">Verificar servidor</button>
+                        <button class="action-button">Marcar como lida</button>
+                    </div>
+                </div>
+                <div class="notification-options">⋮</div>
+            </div>
+            
+            <div class="notification-card">
+                <div class="notification-icon info">i</div>
+                <div class="notification-content">
+                    <div class="notification-title">Manutenção programada <span class="badge badge-info">Informativo</span></div>
+                    <div class="notification-message">Haverá uma manutenção programada no dia 18/05/2025, entre 02:00 e 04:00. Os serviços podem apresentar instabilidade durante este período.</div>
+                    <div class="notification-time">Hoje, 10:30</div>
+                    <div class="notification-actions">
+                        <button class="action-button primary">Ver detalhes</button>
+                    </div>
+                </div>
+                <div class="notification-options">⋮</div>
+            </div>
+            
+            <div class="notification-card">
+                <div class="notification-icon">↑</div>
+                <div class="notification-content">
+                    <div class="notification-title">Serviço DNS normalizado <span class="badge badge-success">Resolvido</span></div>
+                    <div class="notification-message">O serviço DNS foi normalizado e está operando sem problemas. Duração da instabilidade: 23 minutos.</div>
+                    <div class="notification-time">Hoje, 08:55</div>
+                    <div class="notification-actions">
+                        <button class="action-button primary">Ver relatório</button>
+                    </div>
+                </div>
+                <div class="notification-options">⋮</div>
+            </div>
+            
+            <div class="notification-card">
+                <div class="notification-icon alert">!</div>
+                <div class="notification-content">
+                    <div class="notification-title">Alerta de instabilidade do DNS <span class="badge badge-warning">Atenção</span></div>
+                    <div class="notification-message">O serviço DNS está apresentando lentidão. A equipe técnica está investigando o problema.</div>
+                    <div class="notification-time">Hoje, 08:32</div>
+                    <div class="notification-actions">
+                        <button class="action-button primary">Ver detalhes</button>
+                    </div>
+                </div>
+                <div class="notification-options">⋮</div>
+            </div>
+            
+            <div class="notification-card">
+                <div class="notification-icon info">i</div>
+                <div class="notification-content">
+                    <div class="notification-title">Resumo diário <span class="badge badge-info">Informativo</span></div>
+                    <div class="notification-message">O resumo diário de atividades do dia 13/05/2025 está disponível para visualização. Não foram detectados problemas significativos.</div>
+                    <div class="notification-time">Ontem, 07:00</div>
+                    <div class="notification-actions">
+                        <button class="action-button primary">Ver resumo</button>
+                    </div>
+                </div>
+                <div class="notification-options">⋮</div>
+            </div>
+        </div>
+        
+        <div class="pagination">
+            <div class="page-item page-arrow">«</div>
+            <div class="page-item active">1</div>
+            <div class="page-item">2</div>
+            <div class="page-item">3</div>
+            <div class="page-item">...</div>
+            <div class="page-item">8</div>
+            <div class="page-item page-arrow">»</div>
+        </div>
+        
+        <div class="notifications-settings">
+            <div class="settings-title">Configurações de Notificações</div>
+            <div class="settings-grid">
+                <div class="settings-item">
+                    <div class="settings-label">
+                        <div class="settings-name">Alertas Críticos</div>
+                        <div class="settings-description">Notificações sobre problemas críticos</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="settings-item">
+                    <div class="settings-label">
+                        <div class="settings-name">Alertas de Segurança</div>
+                        <div class="settings-description">Notificações sobre segurança</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="settings-item">
+                    <div class="settings-label">
+                        <div class="settings-name">Manutenções Programadas</div>
+                        <div class="settings-description">Avisos sobre manutenções</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="settings-item">
+                    <div class="settings-label">
+                        <div class="settings-name">Alertas de Performance</div>
+                        <div class="settings-description">Problemas de desempenho</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="settings-item">
+                    <div class="settings-label">
+                        <div class="settings-name">Resumos Diários</div>
+                        <div class="settings-description">Resumos das atividades diárias</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="settings-item">
+                    <div class="settings-label">
+                        <div class="settings-name">Novidades do Sistema</div>
+                        <div class="settings-description">Atualizações e novos recursos</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="settings-item">
+                    <div class="settings-label">
+                        <div class="settings-name">Notificações por Email</div>
+                        <div class="settings-description">Receba notificações no email</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="settings-item">
+                    <div class="settings-label">
+                        <div class="settings-name">Notificações Push</div>
+                        <div class="settings-description">Notificações no navegador</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

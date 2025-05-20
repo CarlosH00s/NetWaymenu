@@ -1,0 +1,587 @@
+DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Inicial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a1a;
+            min-height: 100vh;
+            color: #e0e0e0;
+        }
+        
+        .navbar {
+            background-color: #121212;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            height: 60px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #333;
+        }
+        
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #e0e0e0;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin: 0 15px;
+        }
+        
+        .nav-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: #03A9F4;
+        }
+        
+        .mobile-menu-icon {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+        }
+        
+        .hero {
+            height: 500px;
+            background: linear-gradient(rgba(10, 10, 10, 0.7), rgba(10, 10, 10, 0.9)), url('/api/placeholder/1920/500');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-top: 60px;
+            padding: 0 20px;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #ccc;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: #1565C0;
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0d47a1;
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .features {
+            padding: 80px 20px;
+            background-color: #121212;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .feature-card {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #333;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-img {
+            height: 180px;
+            background-color: #262626;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #03A9F4;
+            font-size: 48px;
+        }
+        
+        .feature-content {
+            padding: 25px;
+        }
+        
+        .feature-content h3 {
+            margin-bottom: 15px;
+            color: #e0e0e0;
+        }
+        
+        .feature-content p {
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+        
+        .stats {
+            padding: 80px 20px;
+            background-color: #1a1a1a;
+            text-align: center;
+        }
+        
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .stat-item {
+            padding: 20px;
+            min-width: 200px;
+        }
+        
+        .stat-value {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #03A9F4;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            color: #b0b0b0;
+        }
+        
+        .testimonials {
+            padding: 80px 20px;
+            background-color: #121212;
+        }
+        
+        .testimonial-slider {
+            max-width: 800px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        
+        .testimonial {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 8px;
+            margin: 20px;
+            border: 1px solid #333;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: #b0b0b0;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #262626;
+            margin-right: 15px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #03A9F4;
+            font-weight: bold;
+        }
+        
+        .author-info h4 {
+            margin-bottom: 5px;
+            color: #e0e0e0;
+        }
+        
+        .author-info p {
+            color: #757575;
+            font-size: 14px;
+        }
+        
+        .cta-section {
+            padding: 80px 20px;
+            background-color: #1a1a1a;
+            text-align: center;
+        }
+        
+        .cta-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .cta-section h2 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        
+        .cta-section p {
+            margin-bottom: 30px;
+            color: #b0b0b0;
+            font-size: 1.1rem;
+        }
+        
+        .footer {
+            background-color: #121212;
+            color: #b0b0b0;
+            padding: 50px 20px 20px;
+            border-top: 1px solid #333;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+        }
+        
+        .footer-section h3 {
+            color: #e0e0e0;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #b0b0b0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: #03A9F4;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 40px;
+            border-top: 1px solid #333;
+            color: #757575;
+            font-size: 14px;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
+            }
+            
+            .mobile-menu-icon {
+                display: block;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+
+        a {
+  text-decoration: none;
+  color: inherit; /* Mantém a cor do texto original */
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.feature-card {
+    text-decoration: none
+}
+
+.features-section {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.features-section h2 {
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+.features-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.feature-card {
+    background-color: #222;
+    border-radius: 10px;
+    width: 300px;
+    padding: 30px 20px;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    border: 1px solid #444;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.feature-img {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.feature-content h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.feature-content p {
+    font-size: 14px;
+    color: #ccc;
+}
+
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Net Way</div>
+        <ul class="nav-links">
+            <li><a href="inicio.html" class="active">Início</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="contato.html">Contato</a></li>
+            <li><a href="sobre.html">Sobre</a></li>
+        </ul>
+        <div class="mobile-menu-icon" onclick="alert('Menu móvel')">☰</div>
+    </nav>
+    
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Bem-vindo à sua plataforma personalizada</h1>
+            <p>Tudo o que você precisa para gerenciar e visualizar seus dados em um só lugar. Simples, rápido e eficiente.</p>
+            <div class="cta-buttons">
+                <a href="dashboard.html" class="btn btn-primary">Acessar Dashboard</a>
+                <a href="saiba+.html" class="btn btn-secondary">Saiba Mais</a>
+            </div>
+        </div>
+    </section>
+    
+      <section class="features-section">
+    <h2>Principais Recursos</h2>
+    <div class="features-grid">
+        <a href="analise.html" class="feature-card">
+            <div class="feature-img">📊</div>
+            <div class="feature-content">
+                <h3>Análise de Dados</h3>
+                <p>Visualize e analise seus dados de forma intuitiva com gráficos interativos e relatórios personalizados.</p>
+            </div>
+        </a>
+
+        <a href="notificaçao.html" class="feature-card">
+            <div class="feature-img">🔔</div>
+            <div class="feature-content">
+                <h3>Notificações em Tempo Real</h3>
+                <p>Receba alertas e atualizações importantes diretamente no seu painel, mantendo-se sempre informado.</p>
+            </div>
+        </a>
+
+        <a href="segurança.html" class="feature-card">
+            <div class="feature-img">🔒</div>
+            <div class="feature-content">
+                <h3>Segurança Avançada</h3>
+                <p>Seus dados estão protegidos com as mais avançadas tecnologias de criptografia e segurança.</p>
+            </div>
+        </a>
+    </div>
+</section>
+
+    
+    <section class="stats">
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-value">15k+</div>
+                <div class="stat-label">Usuários Ativos</div>
+            </div>
+            
+            <div class="stat-item">
+                <div class="stat-value">99.9%</div>
+                <div class="stat-label">Tempo Online</div>
+            </div>
+            
+            <div class="stat-item">
+                <div class="stat-value">5M+</div>
+                <div class="stat-label">Transações</div>
+            </div>
+            
+            <div class="stat-item">
+                <div class="stat-value">24/7</div>
+                <div class="stat-label">Suporte</div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="testimonials">
+        <div class="section-title">
+            <h2>O que nossos usuários dizem</h2>
+        </div>
+        <div class="testimonial-slider">
+            <div class="testimonial">
+                <div class="testimonial-text">
+                    "Esta plataforma transformou completamente a forma como gerenciamos nossos dados. A interface é intuitiva e os recursos são exatamente o que precisávamos para otimizar nossos processos."
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">MS</div>
+                    <div class="author-info">
+                        <h4>Maria Silva</h4>
+                        <p>Diretora de Operações</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="cta-section">
+        <div class="cta-container">
+            <h2>Pronto para começar?</h2>
+            <p>Acesse agora seu dashboard e comece a explorar todos os recursos disponíveis.</p>
+            <a href="#" class="btn btn-primary">Acessar Dashboard</a>
+        </div>
+    </section>
+    
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>MeuApp</h3>
+                <p>Sua plataforma completa para gerenciamento e análise de dados.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Links Rápidos</h3>
+                <ul class="footer-links">
+                    <li><a href="inicio.html">Início</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="sobre.html">Produtos</a></li>
+
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Suporte</h3>
+                <ul class="footer-links">
+                    <li><a href="saiba+.html">Central de Ajuda</a></li>
+                    <li><a href="contato.html">Contato</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="sobre.html">Documentação</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Termos de Serviço</a></li>
+                    <li><a href="#">Política de Privacidade</a></li>
+                    <li><a href="#">Cookies</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            &copy; 2025 MeuApp. Todos os direitos reservados.
+        </div>
+    </footer>
+</body>
+</html>
